@@ -9,7 +9,11 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log("Dice =" + Randomizer.UsingDice().ToString());
+            for (int i = 0; i < 13; i++)
+            {
+                Card card = new Card(i, CardsSuits.Clubs);
+                Debug.Log(card.Name);
+            }
         }    
     }
 }

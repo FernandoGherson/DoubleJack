@@ -1,14 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
-using System.Collections.Generic;
-using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    public event Action<Player> OnPlayerFinished;
+    public static event Action<Player> OnPlayerFinished;
 
-    public string playerName;
+    public string myName;
     [HideInInspector] public int[] dices;
     [HideInInspector] public int bestDice;
 
@@ -18,7 +16,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _isMyTurn = false;
-        FindObjectOfType<TurnHandler>().OnNextPLayerTurn += BeginMyTurn;
+        TurnHandler.OnNextPLayerTurn += BeginMyTurn;
     }
 
     public void Click(InputAction.CallbackContext context)
@@ -28,9 +26,10 @@ public class Player : MonoBehaviour
             if (_isMyTurn)
             {
                 dices[_diceIndex] = Randomizer.UsingDice();
-                _diceIndex++;
+                Debug.Log(myName + " d" + (_diceIndex+1).ToString() + " = " + dices[_diceIndex].ToString());
+                _diceIndex += 1;
 
-                if (_diceIndex == dices.Length - 1)
+                if (_diceIndex == dices.Length)
                 {
                     _isMyTurn = false;
                     OnPlayerFinished?.Invoke(this);

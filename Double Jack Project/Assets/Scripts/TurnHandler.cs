@@ -6,18 +6,22 @@ using System.Collections.Generic;
 
 public class TurnHandler : MonoBehaviour
 {
+    public event Action<Player, int> OnNextPLayerTurn;
+    public event Action<Player> OnWinTurn;
+
+    private IEnumerator turn;
     Player[] _players;
-    public static event Action<Player> OnNextPLayerTurn;
-    public static event Action<Player> OnWinTurn;
     bool _playerFinished;
     int _startIndex;
     Card _openedCard;
     DeckOfCards _deck;
-    private IEnumerator turn;
+    
     
     
     void Start()
     {
+        // fazer destruir outros iguas 
+
         _startIndex = UnityEngine.Random.Range(0, _players.Length);
 
         _players = FindObjectsOfType<Player>();
@@ -58,7 +62,8 @@ public class TurnHandler : MonoBehaviour
         _openedCard = _deck.DrawCard();
 
         List<int> playersOnTurnPoints = new List<int>();
-        
+        int numberOfDices = _players.Length;
+
         for (int k = 0; k < _players.Length; k++)
         {
             int correctedIndex;
@@ -68,7 +73,7 @@ public class TurnHandler : MonoBehaviour
                 correctedIndex = _startIndex + k;
             Player p = _players[correctedIndex];
 
-            OnNextPLayerTurn?.Invoke(p);
+            OnNextPLayerTurn?.Invoke(p, numberOfDices - k);
             _playerFinished = false;
             while (_playerFinished == false)
                 yield return new WaitForSeconds(0.1f);

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DeckOfCards
@@ -22,12 +21,12 @@ public class DeckOfCards
     void AddBlackCards(int max)
     {
         // add Clubs
-        for (int i = 1; i < max + 1; i++)
+        for (int i = 2; i < max + 1; i++)
         {
             _deck.Add(new Card(i, CardsSuits.Clubs));
         }
         // add Spades
-        for (int i = 1; i < max + 1; i++)
+        for (int i = 2; i < max + 1; i++)
         {
             _deck.Add(new Card(i, CardsSuits.Spades));
         }
@@ -38,12 +37,12 @@ public class DeckOfCards
         // in doubleSizedDeck maxValeu = 12
 
         // add Diamonds
-        for (int i = 1; i < 12 + 1; i++)
+        for (int i = 2; i < 12 + 1; i++)
         {
             _deck.Add(new Card(i, CardsSuits.Diamonds));
         }
         // add Hearts
-        for (int i = 1; i < 12 + 1; i++)
+        for (int i = 2; i < 12 + 1; i++)
         {
             _deck.Add(new Card(i, CardsSuits.Hearts));
         }

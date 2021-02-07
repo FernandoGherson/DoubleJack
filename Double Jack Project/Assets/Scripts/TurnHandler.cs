@@ -13,40 +13,35 @@ public class TurnHandler : MonoBehaviour
     Player[] _players;
     bool _playerFinished;
     int _startIndex;
-    Card _openedCard;
-    DeckOfCards _deck;
-    
+    Card _openedCard;    
     
     
     void Start()
     {
         // fazer destruir outros iguas 
 
-        _players = FindObjectsOfType<Player>();
-        _startIndex = UnityEngine.Random.Range(0, _players.Length);
-        Debug.Log("numero de jogadores = " + _players.Length.ToString());
+        //_startIndex = UnityEngine.Random.Range(0, _players.Length);
 
-        if (_players.Length == 2)
-        {
-            _deck = new DeckOfCards(false);
-        }    
-        else if(_players.Length == 4)
-        {
-            _deck = new DeckOfCards(true);
-        }
-        //else
-        //erro
+        /*
+        _players = FindObjectsOfType<Player>();
+        
+        Debug.Log("numero de jogadores = " + _players.Length.ToString());
 
         Debug.Log(_players[0].myName);
         Debug.Log(_players[1].myName);
         Debug.Log(_players[2].myName);
         Debug.Log(_players[3].myName);
-        
+        */
+
         Player.OnPlayerFinished += OnPlayerFinished;
     }
 
-    public void StartNewTurn()
+    public void StartNewTurn(Card newCard, Player[] thePlayers, int whoStart)
     {
+        _openedCard = newCard;
+        _players = thePlayers;
+        _startIndex = whoStart;
+
         if (turn != null)
             StopCoroutine(turn);
         turn = TurnRotine();
@@ -65,7 +60,7 @@ public class TurnHandler : MonoBehaviour
 
     IEnumerator TurnRotine()
     {
-        _openedCard = _deck.DrawCard();
+        //_openedCard = _deck.DrawCard();
         Debug.Log("card is a " + _openedCard.Name);
 
         List<int> playersOnTurnPoints = new List<int>();
@@ -88,12 +83,13 @@ public class TurnHandler : MonoBehaviour
             while (_playerFinished == false)
                 yield return new WaitForSeconds(0.1f);
 
-            if (correctedIndex == _startIndex && DetermineIfAutoWin(p))
+            if (correctedIndex == _startIndex)
             {
-                OnWinTurn?.Invoke(p);
-
-                _startIndex = NextStartIndex(correctedIndex);
-                yield break;
+                if (DetermineIfAutoWin(p))
+                {
+                    OnWinTurn?.Invoke(p);
+                    yield break;
+                }
             }
 
             playersOnTurnPoints.Add(DeterminePlayerPoints(p));
@@ -102,8 +98,6 @@ public class TurnHandler : MonoBehaviour
         }
         int victoryIndex = DetermineWiner(playersOnTurnPoints);
         OnWinTurn?.Invoke(_players[victoryIndex]);
-
-        _startIndex = NextStartIndex(victoryIndex);
     }
 
     #region Functions for TurnRotine()
@@ -119,15 +113,7 @@ public class TurnHandler : MonoBehaviour
         else
             return false;
 
-        //falta 6,6, carta J
-    }
-
-    int NextStartIndex(int winnerIndex)
-    {
-        if (winnerIndex + 1 < _players.Length)
-            return winnerIndex + 1;
-        else
-            return 0;
+        //falta 6,6, carta Jack
     }
 
     int DeterminePlayerPoints(Player p)

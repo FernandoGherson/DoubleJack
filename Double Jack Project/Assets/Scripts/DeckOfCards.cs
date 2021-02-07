@@ -5,9 +5,20 @@ public class DeckOfCards
 {
     List<Card> _deck = new List<Card>();
 
-    public DeckOfCards(bool doubleSizedDeck) // 2 players mode => doubleSizedDeck = false ;  4 players mode => doubleSizedDeck = true 
+    public DeckOfCards(int numberOfPlayers) // 2 players mode => doubleSizedDeck = false ;  4 players mode => doubleSizedDeck = true 
     {
-        int maxValue = (doubleSizedDeck ? 12 : 11);
+        bool doubleSizedDeck = false;
+
+        if (numberOfPlayers == 2)
+        {
+            doubleSizedDeck = false;
+        }
+        else if (numberOfPlayers == 4)
+        {
+            doubleSizedDeck = true;
+        }
+
+        int maxValue = doubleSizedDeck? 12 : 11;
 
         AddBlackCards(maxValue);
 

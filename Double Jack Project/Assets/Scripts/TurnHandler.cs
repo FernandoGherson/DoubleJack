@@ -10,7 +10,7 @@ public class TurnHandler : MonoBehaviour
     public static event Action<Player, int> OnNextPLayerTurn;
     public static event Action<int> OnWinTurn;
 
-    IEnumerator turn;
+    IEnumerator _turn;
     Card _openedCard;
     Player[] _playersArray;
     int _startIndex;
@@ -38,13 +38,13 @@ public class TurnHandler : MonoBehaviour
         _playersArray = players;
         _startIndex = whoStart;
 
-        if (turn != null)
-            StopCoroutine(turn);
-        turn = TurnRotine();
-        StartCoroutine(turn);
+        if (_turn != null)
+            StopCoroutine(_turn);
+        _turn = TurnRotine();
+        StartCoroutine(_turn);
     }
 
-    public void StopTurn() => StopCoroutine(turn);
+    public void StopTurn() => StopCoroutine(_turn);
     #endregion
 
     void OnPlayerFinished(Player p) => _thePlayerFinished = true;
@@ -52,9 +52,6 @@ public class TurnHandler : MonoBehaviour
     IEnumerator TurnRotine()
     {
         BuildQueue();
-
-        Debug.Log("card is a " + _openedCard.Name);
-
         List<int> playersTurnPoints = new List<int>();
 
         for (int k = 0; k < _playersArray.Length; k++)

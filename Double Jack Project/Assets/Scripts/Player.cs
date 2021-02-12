@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public static event Action<Player> OnPlayerFinished;
+    public static event Action<Player> OnDiceRoled;
 
     public string myName;
     [HideInInspector] public int[] dices;
@@ -26,8 +27,8 @@ public class Player : MonoBehaviour
             if (_isMyTurn)
             {
                 dices[_diceIndex] = Randomizer.UsingDice();
-                Debug.Log(myName + " d" + (_diceIndex+1).ToString() + " = " + dices[_diceIndex].ToString());
                 _diceIndex += 1;
+                OnDiceRoled?.Invoke(this);
 
                 if (_diceIndex == dices.Length)
                 {
@@ -44,6 +45,10 @@ public class Player : MonoBehaviour
         {
             _isMyTurn = true;
             Array.Resize(ref dices, numberOfDices);
+            for (int i = 0; i < dices.Length; i++)
+            {
+                dices[i] = 0;
+            }
             _diceIndex = 0;
         }
     }

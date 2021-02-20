@@ -5,59 +5,27 @@ public class DeckOfCards
 {
     List<Card> _deck = new List<Card>();
 
-    public DeckOfCards(int numberOfPlayers) // 2 players mode => doubleSizedDeck = false ;  4 players mode => doubleSizedDeck = true 
+    public DeckOfCards()
     {
-        bool doubleSizedDeck = false;
-
-        if (numberOfPlayers == 2)
-        {
-            doubleSizedDeck = false;
-        }
-        else if (numberOfPlayers == 4)
-        {
-            doubleSizedDeck = true;
-        }
-
-        int maxValue = doubleSizedDeck? 12 : 11;
-
-        AddBlackCards(maxValue);
-
-        if (doubleSizedDeck)
-            AddRedCards();
+        AddCards();
 
         Shuffle(); // Fisher-Yates shuffle
     }
 
     #region Constructor functions
-    void AddBlackCards(int max)
+    void AddCards()
     {
-        // add Clubs
-        for (int i = 2; i < max + 1; i++)
+        // add all balck cards
+        for (int i = 2; i < 12 + 1; i++)
         {
             _deck.Add(new Card(i, CardsSuits.Clubs));
-        }
-        // add Spades
-        for (int i = 2; i < max + 1; i++)
-        {
             _deck.Add(new Card(i, CardsSuits.Spades));
         }
+        // add the rad jacks
+        _deck.Add(new Card(11, CardsSuits.Diamonds));
+        _deck.Add(new Card(11, CardsSuits.Hearts));
     }
 
-    void AddRedCards()
-    {
-        // in doubleSizedDeck maxValeu = 12
-
-        // add Diamonds
-        for (int i = 2; i < 12 + 1; i++)
-        {
-            _deck.Add(new Card(i, CardsSuits.Diamonds));
-        }
-        // add Hearts
-        for (int i = 2; i < 12 + 1; i++)
-        {
-            _deck.Add(new Card(i, CardsSuits.Hearts));
-        }
-    }
 
     void Shuffle() // Fisher-Yates shuffle
     {

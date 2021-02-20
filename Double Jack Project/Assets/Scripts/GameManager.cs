@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _deck = new DeckOfCards(2);
+        _deck = new DeckOfCards();
         _turnHandler = FindObjectOfType<TurnHandler>();
         TurnHandler.OnWinTurn += OnWinTurn;
         StartCoroutine(LateStart());
